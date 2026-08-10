@@ -1,4 +1,13 @@
 <title>무인도 생존 확률 테스트</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="10개의 표류 상황으로 생존 확률과 유형, 최후의 결말까지 알려주는 무인도 생존 심리테스트">
+<meta name="theme-color" content="#14638f">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/icons/icon-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="무인도 생존">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697935900449471"
      crossorigin="anonymous"></script>
 <style>
@@ -808,4 +817,11 @@
   });
 
 })();
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("/sw.js").catch(function(){});
+    });
+  }
 </script>
