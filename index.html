@@ -279,7 +279,14 @@
   }
   @keyframes flare-in{ from{ opacity:0; transform:scale(.9);} to{opacity:1; transform:none;} }
   @media (prefers-reduced-motion: reduce){ .hero-type, .type-icon{ animation:none; } }
-  #story strong, #analysis strong{ color:var(--accent-ink); font-weight:700; }
+  #story .mark, #analysis .mark{
+    color:var(--accent-ink); background:rgba(169,201,62,0.22);
+    padding:0 3px; border-radius:4px;
+  }
+  #story .day-line{
+    font-family:'Jua','Arial Narrow',sans-serif; font-size:14px;
+    letter-spacing:.04em; color:var(--sea-ink); margin:0 0 10px;
+  }
 
   .metarow{ display:flex; gap:10px; margin:24px 0 6px; flex-wrap:wrap; }
   .metarow.center{ justify-content:center; }
@@ -292,8 +299,10 @@
 
   .divider{ border:none; border-top:1px dashed var(--line); margin:22px 0; }
   .block-label{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--leaf-ink); margin-bottom:10px; }
-  #analysis{ font-size:14.5px; }
-  #story{ font-size:15.5px; white-space:pre-line; }
+  #analysis p, #story p{ margin:0 0 12px; }
+  #analysis p:last-child, #story p:last-child{ margin-bottom:0; }
+  #analysis{ font-size:14.5px; line-height:1.7; }
+  #story{ font-size:15.5px; line-height:1.75; }
   .stamp{
     margin-top:24px; padding-top:14px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); letter-spacing:.08em;
@@ -465,11 +474,11 @@
 
           <hr class="divider">
           <div class="block-label">AI 분석</div>
-          <p id="analysis"></p>
+          <div id="analysis"></div>
 
           <hr class="divider">
           <div class="block-label">무인도에서 당신의 최후</div>
-          <p id="story"></p>
+          <div id="story"></div>
 
           <div class="stamp mono">
             <span id="stampType">--</span>
@@ -770,11 +779,14 @@
     var twist = TWIST[secondary];
     var ending = ENDING[dominant][band];
 
-    var storyHtml = "<strong>" + dayLine + "</strong>\n" + escapeHtml(opening) +
-      "\n" + escapeHtml(twist) + " <strong>" + escapeHtml(ending) + "</strong>";
+    var storyHtml = '<p class="day-line">' + escapeHtml(dayLine) + "</p>" +
+      "<p>" + escapeHtml(opening) + "</p>" +
+      "<p>" + escapeHtml(twist) + "</p>" +
+      '<p><span class="mark">' + escapeHtml(ending) + "</span></p>";
 
-    var analysisHtml = "<strong>" + escapeHtml(STRENGTH[dominant]) + "</strong> " +
-      escapeHtml(STRENGTH[secondary]) + " " + escapeHtml(WEAKNESS[weakest]);
+    var analysisHtml = '<p><span class="mark">' + escapeHtml(STRENGTH[dominant]) + "</span></p>" +
+      "<p>" + escapeHtml(STRENGTH[secondary]) + "</p>" +
+      "<p>" + escapeHtml(WEAKNESS[weakest]) + "</p>";
 
     var maxVal = Math.max.apply(null, STAT_KEYS.map(function(k){ return s[k]; }));
     var barsHtml = STAT_KEYS.map(function(k){
