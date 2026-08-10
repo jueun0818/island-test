@@ -1,17 +1,32 @@
 {
+  "id": "/",
   "name": "무인도 생존 확률 테스트",
   "short_name": "무인도 생존",
   "description": "10개의 표류 상황으로 생존 확률과 유형, 최후의 결말까지 알려주는 심리테스트",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#bfe8f6",
   "theme_color": "#14638f",
   "lang": "ko",
+  "dir": "ltr",
+  "categories": ["entertainment", "lifestyle"],
   "icons": [
+    { "src": "/icons/favicon-32.png", "sizes": "32x32", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "테스트 다시 하기",
+      "short_name": "다시 하기",
+      "description": "무인도 생존 확률 테스트를 처음부터 다시 시작합니다",
+      "url": "/?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
   ]
 }

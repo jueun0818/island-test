@@ -1,7 +1,10 @@
-var CACHE_NAME = "castaway-cache-v1";
+var CACHE_VERSION = "v2";
+var CACHE_NAME = "castaway-cache-" + CACHE_VERSION;
 var CORE_ASSETS = [
   "/",
   "/manifest.json",
+  "/icons/favicon-32.png",
+  "/icons/icon-180.png",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
   "/icons/icon-maskable-512.png"
@@ -29,17 +32,30 @@ self.addEventListener("activate", function(event){
 });
 
 self.addEventListener("fetch", function(event){
-  if (event.request.method !== "GET") return;
+  var req = event.request;
+  if (req.method !== "GET") return;
+
+  var url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+
   event.respondWith(
-    caches.match(event.request).then(function(cached){
-      var network = fetch(event.request).then(function(response){
+    caches.match(req).then(function(cached){
+      var network = fetch(req).then(function(response){
         if (response && response.status === 200 && response.type === "basic") {
           var copy = response.clone();
-          caches.open(CACHE_NAME).then(function(cache){ cache.put(event.request, copy); });
+          caches.open(CACHE_NAME).then(function(cache){ cache.put(req, copy); });
         }
         return response;
-      }).catch(function(){ return cached; });
+      }).catch(function(){
+        if (cached) return cached;
+        if (req.mode === "navigate") return caches.match("/");
+        return Response.error();
+      });
       return cached || network;
     })
   );
+});
+
+self.addEventListener("message", function(event){
+  if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
