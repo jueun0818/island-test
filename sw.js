@@ -1,4 +1,4 @@
-var CACHE_VERSION = "v10";
+var CACHE_VERSION = "v11";
 var CACHE_NAME = "castaway-cache-" + CACHE_VERSION;
 var CORE_ASSETS = [
   "/",

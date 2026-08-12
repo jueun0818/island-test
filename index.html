@@ -1,3 +1,5 @@
+<html lang="ko">
+<meta charset="UTF-8">
 <title>무인도 생존 확률 테스트 - 무인도 생존 심리테스트</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="무인도 테스트, 무인도 생존 테스트로 나의 무인도 생존확률 테스트 결과를 확인해보세요. 10개의 표류 상황으로 생존 확률과 유형, 최후의 결말까지 알려주는 무인도 생존 심리테스트">
@@ -91,7 +93,7 @@
   }
 
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  html,body{margin:0;padding:0; overscroll-behavior-y:none;}
   body{
     background: linear-gradient(180deg, var(--sky-a) 0%, var(--sea-a) 55%, var(--sand-a) 100%);
     background-attachment: fixed;
@@ -100,6 +102,10 @@
     line-height:1.6;
     min-height:100%;
     overflow-x:hidden;
+  }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
   }
 
   .sky-deco{
@@ -495,6 +501,7 @@
           <div class="block-label">표류 중 기록된 능력치</div>
           <div class="radar-wrap">
             <div id="statBars"></div>
+            <p id="statSummary" class="sr-only"></p>
             <p id="oneLiner" class="one-liner"></p>
           </div>
 
@@ -779,7 +786,13 @@
     });
   }
 
+  var lastChooseAt = 0;
   function choose(opt, idx){
+    var now = Date.now();
+    if (now - lastChooseAt < 250) return;
+    lastChooseAt = now;
+    if (navigator.vibrate) navigator.vibrate(12);
+
     state.answers.push(idx);
     Object.keys(opt.stats).forEach(function(k){
       state.stats[k] += opt.stats[k];
@@ -788,6 +801,7 @@
     if(state.i >= QUESTIONS.length){
       computeAndRenderResult();
       showScreen(resultEl);
+      if (navigator.vibrate) navigator.vibrate([15,40,15]);
     } else {
       renderQuestion();
     }
@@ -896,6 +910,8 @@
     document.getElementById("typeOut").textContent = type;
     document.getElementById("typeIcon").innerHTML = ICONS[dominant];
     document.getElementById("statBars").innerHTML = radarHtml;
+    document.getElementById("statSummary").textContent = "능력치: " +
+      STAT_KEYS.map(function(k){ return STAT_LABELS[k] + " " + s[k]; }).join(", ");
     document.getElementById("oneLiner").textContent = oneLiner;
     document.getElementById("traitChips").innerHTML = chipsHtml;
     document.getElementById("analysis").innerHTML = analysisHtml;
